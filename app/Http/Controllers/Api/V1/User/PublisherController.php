@@ -58,7 +58,7 @@ class PublisherController extends BaseController
             'receiver_count' => $topic->subscribers->count(),
         ]);
 
-        foreach($topic->subscribers as $subscriber){
+        foreach($topic->subscribers->where('status', 'active') as $subscriber){
             Processmessage::dispatch($this->publisher, $subscriber, $thisMessage->id, $validated['message'])->delay(now()->addSeconds(3));
             //Job to send message to subscriber
            // $this->dispatch(new SendNotification($subscriber, $thisMessage));

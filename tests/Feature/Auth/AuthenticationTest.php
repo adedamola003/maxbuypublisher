@@ -14,13 +14,15 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
+        $response = $this->post('/api/v1/auth/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
+
         $this->assertAuthenticated();
-        $response->assertNoContent();
+        $response->assertStatus(201);
+        $this->assertEquals(true, $response['success']);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
@@ -34,4 +36,6 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
     }
+
+
 }
